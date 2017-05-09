@@ -14,6 +14,7 @@ import qualified Compiler.Hoopl.Internals as Hoopl
 import qualified CoreSyn as GHC
 import qualified CostCentre as GHC
 import qualified DataCon as GHC
+import qualified DynFlags as GHC
 import qualified ForeignCall as GHC
 import qualified GHCi.RemoteTypes as GHC
 import qualified HscTypes as GHC
@@ -56,7 +57,10 @@ instance Show GHC.CostCentreStack where
     show = show . GHC.showSDocUnsafe . GHC.ppr
 
 instance Show GHC.StgBinderInfo where
-    show = const "\"StgBinderInfo\""
+    show x =
+        if GHC.satCallsOnly x
+            then "SatCallsOnly"
+            else "NoStgBinderInfo"
 
 instance Show GHC.SDoc where
     show = show . GHC.showSDocUnsafe
@@ -209,3 +213,7 @@ deriving instance Show GHC.ModBreaks
 deriving instance Show GHC.SptEntry
 
 deriving instance Show GHC.CgGuts
+
+deriving instance Show GHC.PkgConfRef
+
+deriving instance Show GHC.PackageDBFlag
